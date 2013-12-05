@@ -4,10 +4,10 @@ import graph.Vertex;
 
 public class VertexExam implements Vertex{
     int id;
-    
-    public VertexExam(int id) {
+    int identity;
+    public VertexExam(int identity) {
         super();
-        this.id = id;
+        this.identity = identity;
     }
 
     @Override
@@ -26,6 +26,11 @@ public class VertexExam implements Vertex{
     @Override
     public String toString() {
         return "[Vertex:"+this.id+"]";
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
     
 }

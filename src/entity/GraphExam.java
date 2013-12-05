@@ -140,6 +140,7 @@ public class GraphExam implements Graph{
     @Override
     public boolean addVertex(Vertex v) {
         if(this.vertexs.contains(v)) return false;
+        v.setId(this.vertexs.size());
         return this.vertexs.add(v);
     }
 

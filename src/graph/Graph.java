@@ -23,7 +23,8 @@ public interface Graph {
     public Edge   getMaxWeightEdge();
     public Edge   getMinWeightEdge();
     
-    
+    //when add a vertex, graph should set a id for this vertex.
+    //the id should start from 0.
     public boolean addVertex(Vertex v);
     public boolean addEdge(Edge e);
 }
