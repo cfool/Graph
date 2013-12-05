@@ -20,7 +20,7 @@ public class Dijkstra {
             throw new Exception();
     }
     
-    public boolean initGraph(Graph graph){
+    private boolean initGraph(Graph graph){
         this.graph = graph;
         this.maxWeight = null;
         this.zeroWeight = null;
@@ -35,15 +35,12 @@ public class Dijkstra {
             for(int j = 0; j < vertexsum; ++j)
                 vGraph[i][j] = null;
         
-        List<Edge> allEdge = graph.getAllEdge();
-        
-        Iterator<Edge> it = allEdge.iterator();
+        Iterator<Edge> it = graph.getAllEdge().iterator();
         while(it.hasNext()){
             Edge e = it.next();
-            if(e.getOrigin().getId() >= vertexsum || e.getAim().getId() >= vertexsum){
-                return false;
-            }
-            vGraph[e.getOrigin().getId()][e.getAim().getId()] = e.getWeight();
+            int origin = graph.getIndexOfVertex(e.getOrigin());
+            int aim = graph.getIndexOfVertex(e.getAim());
+            vGraph[origin][aim] = e.getWeight();
             if(null == this.maxWeight) this.maxWeight = e.getWeight().getInfinity();
             if(null == this.zeroWeight) this.zeroWeight = e.getWeight().getZero();
         }
@@ -52,34 +49,39 @@ public class Dijkstra {
     }
     
     public List<Vertex> getShortestPath(Vertex origin, Vertex aim){
+        if(this.zeroWeight == null){ // if zeroWeight == null, there is no edge.
+            return null;
+        }
         List<Vertex> result = new LinkedList<Vertex>();
 
         Weight dist[] = new Weight[this.vGraph.length];
         int prev[] = new int[this.vGraph.length];
         dijkstra(origin, dist, prev);
         
-        int i = aim.getId();
-        while(i != origin.getId()){
-            result.add(0,graph.getVertexById(i));
+        int i = this.graph.getIndexOfVertex(aim);
+        int oriIdx = this.graph.getIndexOfVertex(origin);
+        while(i != oriIdx){
+            result.add(0,graph.getVertexByIndex(i));
             i = prev[i];
         }
         result.add(0, origin);
         return result;
     }
     
-    public void dijkstra(Vertex origin, Weight[] dist, int[] prev) {
-        int n = this.vGraph.length;
-        int v = origin.getId();
-        if (v < 0 || v >= n)
-            return;
+    public boolean dijkstra(Vertex origin, Weight[] dist, int[] prev) {
+        if(this.zeroWeight == null) return false;
+        int v = graph.getIndexOfVertex(origin);
+        if (v < 0) return false;
+        int n = graph.getVertexSum();
         boolean[] s = new boolean[n];
         // 初始化
         for (int i = 0; i < n; i++) {
-            dist[i] = vGraph[v][i] == null?this.maxWeight:vGraph[v][i];
             s[i] = false;
-            if (dist[i].equals(this.maxWeight)) {
-                prev[i] = this.vGraph.length;
-            } else {
+            if(vGraph[v][i] == null){
+                dist[i] = this.maxWeight;
+                prev[i] = -1;
+            }else{
+                dist[i] = vGraph[v][i];
                 prev[i] = v;
             }
         }
@@ -107,5 +109,6 @@ public class Dijkstra {
                 }
             }
         }
+        return true;
     }
 }

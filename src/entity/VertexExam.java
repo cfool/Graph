@@ -3,7 +3,6 @@ package entity;
 import graph.Vertex;
 
 public class VertexExam implements Vertex{
-    int id;
     int identity;
     public VertexExam(int identity) {
         super();
@@ -11,26 +10,15 @@ public class VertexExam implements Vertex{
     }
 
     @Override
-    public int getId() {
-        return this.id;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if(!this.getClass().equals(obj.getClass())){
             return false;
         }
-        return this.id == ((VertexExam)obj).id;
+        return this.identity == ((VertexExam)obj).identity;
     }
 
     @Override
     public String toString() {
-        return "[Vertex:"+this.id+"]";
+        return "[Vertex:"+this.identity+"]";
     }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-    
 }

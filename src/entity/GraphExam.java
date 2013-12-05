@@ -7,7 +7,6 @@ import java.util.List;
 import graph.Edge;
 import graph.Graph;
 import graph.Vertex;
-import graph.Weight;
 
 public class GraphExam implements Graph{
     List<Vertex> vertexs;
@@ -40,75 +39,32 @@ public class GraphExam implements Graph{
     }
 
     @Override
-    public Vertex getVertexById(int id) {
-        Iterator<Vertex> it = this.vertexs.iterator();
-        while(it.hasNext()){
-            Vertex v = it.next();
-            if(v.getId() == id){
-                return v;
-            }
+    public Vertex getVertexByIndex(int index) {
+        if(index >= this.vertexs.size()){
+            return null;
         }
-        return null;
+        return this.vertexs.get(index);
     }
     
-
     @Override
-    public Edge getEdge(int origin, int aim) {
+    public Edge getEdge(Vertex origin, Vertex aim) {
+        //return this.getEdge(origin.getId(), aim.getId());
         Iterator<Edge> it = this.edges.iterator();
         while(it.hasNext()){
             Edge e = it.next();
-            if(e.getOrigin().getId() == origin && e.getAim().getId() == aim){
+            if(e.getOrigin().equals(origin) && e.getAim().equals(aim)){
                 return e;
             }
         }
-        
         return null;
-    }
-
-    @Override
-    public Edge getEdge(Vertex origin, Vertex aim) {
-        return this.getEdge(origin.getId(), aim.getId());
     }
 
     @Override
     public boolean isNeighbor(Vertex origin, Vertex aim) {
-        if(null != this.getEdge(origin.getId(), aim.getId())){
+        if(null != this.getEdge(origin, aim)){
             return true;
         }
         return false;
-    }
-
-    @Override
-    public Weight[][] toVector() {
-        int size = this.vertexs.size();
-        Weight result[][] = new Weight[size][size];
-        for(int i = 0; i < size; ++i)
-            for(int j = 0; j < size; ++j){
-                Edge e = this.getEdge(i, j);
-                if(e == null){
-                    result[i][j] = null;
-                }else{
-                    result[i][j] = e.getWeight();
-                }                
-            }
-        return result;
-    }
-
-    @Override
-    public Weight getEdgeWeight(Edge e) {
-        if(this.edges.contains(e)){
-            return e.getWeight();
-        }
-        return null;
-    }
-
-    @Override
-    public Weight getEdgeWeight(Vertex origin, Vertex aim) {
-        Edge e = this.getEdge(origin, aim);
-        if(null == e){
-            return null;
-        }
-        return e.getWeight();
     }
 
     @Override
@@ -140,7 +96,6 @@ public class GraphExam implements Graph{
     @Override
     public boolean addVertex(Vertex v) {
         if(this.vertexs.contains(v)) return false;
-        v.setId(this.vertexs.size());
         return this.vertexs.add(v);
     }
 
@@ -151,6 +106,11 @@ public class GraphExam implements Graph{
         if(!this.vertexs.contains(e.getAim())) return false;
         
         return this.edges.add(e);
+    }
+
+    @Override
+    public int getIndexOfVertex(Vertex vertex) {
+        return this.vertexs.indexOf(vertex);
     }
 
 }
