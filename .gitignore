@@ -1,6 +1,5 @@
 #ignore .class
-.class
-
+bin/
 #ignore tags
 tags
 

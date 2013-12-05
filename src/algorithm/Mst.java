@@ -11,6 +11,14 @@ import graph.Graph;
 import graph.Vertex;
 
 public class Mst{
+    private Graph graph;
+    public Mst(Graph graph){
+        this.graph = graph;
+    }
+    
+    public List<Edge> getMst(){
+        return getMst(this.graph);
+    }
     
     public static List<Edge> getMst(Graph graph){
         List<Edge> allEdge = graph.getAllEdge();
@@ -44,13 +52,7 @@ public class Mst{
                     outside.remove(edge.getAim());
                     result.add(edge);
                     break;
-                }
-                else if(inside.contains(edge.getAim()) && outside.contains(edge.getOrigin())){
-                    inside.add(edge.getOrigin());
-                    outside.remove(edge.getOrigin());
-                    result.add(edge);
-                    break;
-                }         
+                }   
             }
             if(presize == outside.size()){//no mst
                 return null;
